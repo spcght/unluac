@@ -21,6 +21,7 @@ abstract public class LFunctionType extends BObjectType<LFunction> {
       case LUA52: return new LFunctionType52();
       case LUA53: return new LFunctionType53();
       case LUA54: return new LFunctionType54();
+      case LUAMIWIFI: return new LFunctionTypeMiWifi();
       default: throw new IllegalStateException();
     }
   }
@@ -443,4 +444,21 @@ class LFunctionType54 extends LFunctionType {
     write_debug(out, header, object);
   }
   
+}
+
+class LFunctionTypeMiWifi extends LFunctionType51 {
+  @Override
+  protected void parse_main(ByteBuffer buffer, BHeader header, LFunctionParseState s) {
+    s.lenParameter = 0xFF & buffer.get();
+    s.name = header.string.parse(buffer, header);
+    s.lenUpvalues = 0xFF & buffer.get();
+    s.lineBegin = header.integer.parse(buffer, header).asInt();
+    s.vararg = 0xFF & buffer.get();
+    s.lineEnd = header.integer.parse(buffer, header).asInt();
+    s.maximumStackSize = 0xFF & buffer.get();
+    create_upvalues(buffer, header, s);
+    parse_code(buffer, header, s);
+    parse_constants(buffer, header, s);
+    parse_debug(buffer, header, s);
+  }
 }

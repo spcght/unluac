@@ -59,6 +59,7 @@ public class Registers {
   
   public boolean isLocal(int register, int line) {
     if(register < 0) return false;
+    if (line < 0) line = 0;
     return decls[register][line] != null;
   }
   
@@ -83,6 +84,7 @@ public class Registers {
   }
   
   public Declaration getDeclaration(int register, int line) {
+    if (line < 0) line = 0;
     return decls[register][line];
   }
   

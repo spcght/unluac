@@ -14,6 +14,7 @@ public abstract class LStringType extends BObjectType<LString> {
       case LUA50: return new LStringType50();
       case LUA53: return new LStringType53();
       case LUA54: return new LStringType54();
+      case LUAMIWIFI: return new LStringTypeMiWifi();
       default: throw new IllegalStateException();
     }
   }
@@ -68,6 +69,36 @@ class LStringType50 extends LStringType {
         out.write(string.value.charAt(i));
       }
       out.write(0);
+    }
+  }
+}
+
+class LStringTypeMiWifi extends LStringType50 {
+ 
+  @Override
+  public LString parse(final ByteBuffer buffer, BHeader header) {
+    BInteger sizeT = header.sizeT.parse(buffer, header);
+    final StringBuilder b = this.b.get();
+    int key = 0x000000ff & (sizeT.asInt() * 13 + 55);
+    b.setLength(0);
+    sizeT.iterate(new Runnable() {
+
+      @Override
+      public void run() {
+        b.append((char) (0xFF & (buffer.get() ^ key)));
+      }
+
+    });
+    if(b.length() == 0) {
+      return LString.NULL;
+    } else {
+      char last = b.charAt(b.length() - 1);
+      b.delete(b.length() - 1, b.length());
+      String s = b.toString();
+      if(header.debug) {
+        System.out.println("-- parsed <string> \"" + s + "\"");
+      }
+      return new LString(s, last);
     }
   }
 }

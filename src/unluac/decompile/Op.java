@@ -148,7 +148,8 @@ public enum Op {
   // Special
   EXTRABYTE("extrabyte", OpV.LUA50 | OpV.LUA51 | OpV.LUA52 | OpV.LUA53 | OpV.LUA54, OperandFormat.x),
   DEFAULT("default", 0, OperandFormat.AR, OperandFormat.BRK, OperandFormat.CRK),
-  DEFAULT54("default", 0, OperandFormat.AR, OperandFormat.BR, OperandFormat.C, OperandFormat.k);
+  DEFAULT54("default", 0, OperandFormat.AR, OperandFormat.BR, OperandFormat.C, OperandFormat.k),
+  MAGIC("magic", OpV.LUA50 | OpV.LUA51 | OpV.LUA52 | OpV.LUA53 | OpV.LUA54, OperandFormat.AR, OperandFormat.BR, OperandFormat.C);
   
   public final String name;
   public final int versions;
@@ -224,6 +225,7 @@ public enum Op {
    */
   public int target(int codepoint, CodeExtract ex) {
     switch(this) {
+      case MAGIC:
       case MOVE:
       case LOADI: case LOADF: case LOADK: case LOADKX:
       case LOADBOOL: case LOADFALSE: case LFALSESKIP: case LOADTRUE:

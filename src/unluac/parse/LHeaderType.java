@@ -18,6 +18,7 @@ abstract public class LHeaderType extends BObjectType<LHeader> {
   public static final LHeaderType TYPE52 = new LHeaderType52();
   public static final LHeaderType TYPE53 = new LHeaderType53();
   public static final LHeaderType TYPE54 = new LHeaderType54();
+  public static final LHeaderType TYPEMIWIFI = new LHeaderTypeMiWifi();
   
   public static LHeaderType get(Version.HeaderType type) {
     switch(type) {
@@ -26,6 +27,7 @@ abstract public class LHeaderType extends BObjectType<LHeader> {
       case LUA52: return TYPE52;
       case LUA53: return TYPE53;
       case LUA54: return TYPE54;
+      case LUAMIWIFI: return TYPEMIWIFI;
       default: throw new IllegalStateException();
     }
   }
@@ -489,4 +491,22 @@ class LHeaderType54 extends LHeaderType {
     header.lfloat.write(out, header, header.lfloat.create(TEST_FLOAT));
   }
   
+}
+class LHeaderTypeMiWifi extends LHeaderType51 {
+
+  @Override
+  protected void parse_number_integrality(ByteBuffer buffer, BHeader header, LHeaderParseState s) {
+    int lNumberIntegralityCode = 0xFF & buffer.get();
+    if(header.debug) {
+      System.out.println("-- Lua number integrality code: " + lNumberIntegralityCode);
+    }
+    s.lNumberIntegrality = (lNumberIntegralityCode & 0x01) == 1;
+    if ((lNumberIntegralityCode & 0x02) != 0) {
+      s.linteger = new LNumberType(2, true, LNumberType.NumberMode.MODE_INTEGER);
+    } else if ((lNumberIntegralityCode & 0x04) != 0) {
+      s.linteger = new LNumberType(4, true, LNumberType.NumberMode.MODE_INTEGER);
+    } else if ((lNumberIntegralityCode & 0x08) != 0) {
+      s.linteger = new LNumberType(8, true, LNumberType.NumberMode.MODE_INTEGER);
+    }
+  }
 }

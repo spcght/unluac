@@ -289,10 +289,55 @@ public class OpcodeMap {
         map[81] = Op.VARARGPREP;
         map[82] = Op.EXTRAARG;
         break;
+      case LUAMIWIFI:
+        map = new Op[42];
+        map[0] = Op.LEN;
+        map[1] = Op.CLOSURE;
+        map[2] = Op.MAGIC;
+        map[3] = Op.LT;
+        map[4] = Op.NOT;
+        map[5] = Op.LT;
+        map[6] = Op.LOADK;
+        map[7] = Op.SETLIST;
+        map[8] = Op.RETURN;
+        map[9] = Op.TEST;
+        map[10] = Op.TFORLOOP;
+        map[11] = Op.FORPREP;
+        map[12] = Op.SUB;
+        map[13] = Op.TAILCALL;
+        map[14] = Op.DIV;
+        map[15] = Op.SELF;
+        map[16] = Op.CALL;
+        map[17] = Op.SETTABLE;
+        map[18] = Op.GETUPVAL;
+        map[19] = Op.EQ;
+        map[20] = Op.EQ;
+        map[21] = Op.CONCAT;
+        map[22] = Op.LE;
+        map[23] = Op.LE;
+        map[24] = Op.LOADBOOL;
+        map[25] = Op.MOD;
+        map[26] = Op.FORLOOP;
+        map[27] = Op.GETTABLE;
+        map[28] = Op.NEWTABLE;
+        map[29] = Op.CLOSE;
+        map[30] = Op.VARARG;
+        map[31] = Op.JMP;
+        map[32] = Op.UNM;
+        map[33] = Op.POW;
+        map[34] = Op.MUL;
+        map[35] = Op.TESTSET;
+        map[36] = Op.MOVE;
+        map[37] = Op.ADD;
+        map[38] = Op.GETGLOBAL;
+        map[39] = Op.SETUPVAL;
+        map[40] = Op.SETGLOBAL;
+        map[41] = Op.LOADNIL;
+	break;
       default:
         throw new IllegalStateException();
     }
-    setup_lookup(true);
+    setup_lookup(type != Version.OpcodeMapType.LUAMIWIFI); // MiWifi lua has duplicates
   }
   
   public Op get(int opNumber) {

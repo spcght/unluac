@@ -44,12 +44,14 @@ public class Version {
     LUA52,
     LUA53,
     LUA54,
+    LUAMIWIFI,
   }
   
   public static enum StringType {
     LUA50,
     LUA53,
     LUA54,
+    LUAMIWIFI,
   }
   
   public static enum UpvalueType {
@@ -63,6 +65,7 @@ public class Version {
     LUA52,
     LUA53,
     LUA54,
+    LUAMIWIFI,
   }
   
   public static enum TypeMapType {
@@ -70,6 +73,7 @@ public class Version {
     LUA52,
     LUA53,
     LUA54,
+    LUAMIWIFI,
   }
   
   public static enum OpcodeMapType {
@@ -78,6 +82,7 @@ public class Version {
     LUA52,
     LUA53,
     LUA54,
+    LUAMIWIFI,
   }
   
   public static enum UpvalueDeclarationType {
@@ -313,6 +318,13 @@ public class Version {
           upvaluelengthmode = new Setting<>(ListLengthMode.IGNORE);
           break;
         default: throw new IllegalStateException();
+      }
+      if (config.miwifi) {
+        headertype = HeaderType.LUAMIWIFI;
+        stringtype = StringType.LUAMIWIFI;
+        functiontype = FunctionType.LUAMIWIFI;
+        opcodemap = OpcodeMapType.LUAMIWIFI;
+        typemap = TypeMapType.LUAMIWIFI;
       }
     } else {
       throw new IllegalStateException();

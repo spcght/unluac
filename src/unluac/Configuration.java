@@ -30,6 +30,7 @@ public class Configuration {
   public String typemap;
   public String opmap;
   public String output;
+  public boolean miwifi;
   
   public Configuration() {
     rawstring = false;
@@ -39,6 +40,7 @@ public class Configuration {
     luaj = false;
     opmap = null;
     output = null;
+    miwifi = false;
   }
   
   public Configuration(Configuration other) {
@@ -48,6 +50,7 @@ public class Configuration {
     strict_scope = other.strict_scope;
     opmap = other.opmap;
     output = other.output;
+    miwifi = other.miwifi;
   }
   
   public Output getOutput() {

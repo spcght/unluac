@@ -25,6 +25,10 @@ public class BHeader {
     0x1B, 0x4C, 0x75, 0x61,
   };
   
+  private static final byte[] signatureMiWifi = {
+    0x1B, 0x46, 0x61, 0x74, 0x65, 0x2f, 0x5a, 0x1b
+  };
+
   public final boolean debug = false;
   
   public final Configuration config;
@@ -78,11 +82,31 @@ public class BHeader {
   
   public BHeader(ByteBuffer buffer, Configuration config) {
     this.config = config;
+    boolean origsigfailed = false;
+    byte[] sigbuf = new byte[signature.length];
+
     // 4 byte Lua signature
     for(int i = 0; i < signature.length; i++) {
-      if(buffer.get() != signature[i]) {
-        throw new IllegalStateException("The input file does not have the signature of a valid Lua file.");
+      sigbuf[i] = buffer.get();
+    }
+    for(int i = 0; i < signature.length; i++) {
+      if(sigbuf[i] != signature[i]) {
+        origsigfailed = true;
+        break;
       }
+    }
+    if(origsigfailed) {
+      for(int i = 0; i < sigbuf.length; i++) {
+        if(sigbuf[i] != signatureMiWifi[i]) {
+          throw new IllegalStateException("The input file does not have the signature of a valid Lua file.");
+        }
+      }
+      for(int i = sigbuf.length; i < signatureMiWifi.length; i++) {
+        if(buffer.get() != signatureMiWifi[i]) {
+          throw new IllegalStateException("The input file does not have the signature of a valid Lua file.");
+        }
+      }
+      config.miwifi = true;
     }
     
     int versionNumber = 0xFF & buffer.get();

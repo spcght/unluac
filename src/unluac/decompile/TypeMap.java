@@ -28,6 +28,8 @@ public class TypeMap {
     boolean split_number = false;
     boolean split_boolean = false;
     boolean reverse_number = false;
+    boolean is_mi_wifi = false;
+
     switch(version) {
       case LUA50:
         break;
@@ -44,7 +46,38 @@ public class TypeMap {
         split_boolean = true;
         reverse_number = true;
         break;
+      case LUAMIWIFI:
+	is_mi_wifi = true;
     }
+
+    if (is_mi_wifi) {
+      types = new Type[13];
+
+      NIL = 3;
+      types[NIL] = Type.NIL;
+
+      BOOLEAN = 4;
+      FALSE = UNMAPPED;
+      TRUE = UNMAPPED;
+      types[BOOLEAN] = Type.BOOLEAN;
+
+      NUMBER = 6;
+      types[NUMBER] = Type.NUMBER;
+
+      FLOAT = UNMAPPED;
+
+      INTEGER = 12;
+      types[INTEGER] = Type.INTEGER;
+
+      STRING = 7;
+      SHORT_STRING = UNMAPPED;
+      LONG_STRING = UNMAPPED;
+      types[STRING] = Type.STRING;
+
+      return;
+    }
+
+
     types = new Type[split_string ? (5 + VARIANT) : 5];
     
     types[0] = Type.NIL;

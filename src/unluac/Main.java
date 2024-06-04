@@ -68,6 +68,8 @@ public class Main {
           } else {
             error("option \"" + arg + "\" doesn't have an argument", true);
           }
+        } else if(arg.equals("--miwifi")) {
+		config.miwifi = true;
         } else {
           error("unrecognized option: " + arg, true);
         }
@@ -163,6 +165,7 @@ public class Main {
     System.out.println("  --output <file>   output to <file> instead of stdout");
     System.out.println("  --rawstring       copy string bytes directly to output");
     System.out.println("  --luaj            emulate Luaj's permissive parser");
+    System.out.println("  --miwifi          enbable miwifi specificities");
   }
   
   private static void print_unluac_string(PrintStream out) {
